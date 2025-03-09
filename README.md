@@ -89,3 +89,8 @@ Address=192.168.2.1/24
 ```sudo systemctl restart systemd-networkd```
 20. Reboot Pi
 21. Confirm static IP used ```ip a show wlan0```
+
+##RECAP:
+1. RaspberryPi IP: 192.168.2.1
+2. Network ID: testserv
+3. The Pi is isolated from your main network and runs its own static IP configuration via systemd-networkd.
