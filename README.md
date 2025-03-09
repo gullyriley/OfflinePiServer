@@ -1,26 +1,26 @@
 # OfflinePiServer
 Guide to creating a Private Offline Pi WIFI Network
 
-Requirements:
+## Requirements:
 Raspberry PI (4B)
 USB/SD CARD
 ETHERNET CABLE
 
-PreReq:
+## PreReq:
 1. Download Raspberry PI Imager (https://www.raspberrypi.com/software/)
 2. After installed run and set up imager with custom settings (user/pass, wirelesslan, locale, ssh (password for simplicity))
 
-MAIN:
+## MAIN:
 Installing Required Packages
 1. On main PC SSH in while on same network : ssh username@hostname.local
 2. In SSH run : sudo apt update && sudo apt upgrade -y
 		            sudo apt install -y hostapd dnsmasq iptables-persistent
 
-Removing Main WiFi Configuration
+## Removing Main WiFi Configuration
 3. Since we set up WIFI with the imager we have to remove the settings from where the imager saves them. 
    Clear this entire file : /etc/wpa_supplicant/wpa_supplicant.conf
 
-Configuring HostAPD (WiFi Access Point)
+## Configuring HostAPD (WiFi Access Point)
 4. Create hostapd config file : sudo nano /etc/hostapd/hostapd.conf
 5. Copy text into file : interface=wlan0
 			 driver=nl80211
@@ -38,13 +38,13 @@ Configuring HostAPD (WiFi Access Point)
 6. Point Hostapd to new config file : sudo nano /etc/default/hostapd
    Edit : DAEMON_CONF="" : to include the correct path : "/etc/hostapd/hostapd.conf" :
 
-Configuring dnsmasq (DHCP Server)
+## Configuring dnsmasq (DHCP Server)
 7. Backup default DNSMASQ config file : sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 8. Create new DNSMASQ config file : sudo nano /etc/dnsmasq.conf
    Copy text into file : interface=wlan0
 			 dhcp-range=192.168.2.10,192.168.2.100,24h
 
-Setting Up IP Forwarding & Firewall Rules
+## Setting Up IP Forwarding & Firewall Rules
 9. Edit file : sudo nano /etc/sysctl.conf : and uncomment line : "net.ipv4.ip_forward=1"
    Apply changes with : sudo sysctl -p
 10. Set up NAT and forwarding rules : sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -52,14 +52,14 @@ Setting Up IP Forwarding & Firewall Rules
 				      sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 11. Save even when restarted : sudo netfilter-persistent save
 
-Test for SSH (again)
+## Test for SSH (again)
 12. Start and enable services : sudo systemctl unmask hostapd
 				sudo systemctl enable hostapd dnsmasq
 				sudo systemctl start hostapd dnsmasq
 13. See if you can join local wifi network "testserv" on main PC
 14. SSH in : ssh username@hostname.local
 
-Configure Permanent Static IP
+## Configure Permanent Static IP
 15. Check if network manager is active : sudo systemctl status NetworkManager
 16. Using SystemD create config file : sudo nano /etc/systemd/network/10-wlan0.network
 17. Copy text into file : [Match]
