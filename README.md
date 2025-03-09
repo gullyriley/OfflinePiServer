@@ -57,6 +57,7 @@ dhcp-range=192.168.2.10,192.168.2.100,24h
 
 ## Setting Up IP Forwarding & Firewall Rules
 9. Edit file ```sudo nano /etc/sysctl.conf``` and uncomment line ```"net.ipv4.ip_forward=1"```.
+
 Apply changes with ```sudo sysctl -p```
 11. Set up NAT and forwarding rules:
 ```
@@ -67,11 +68,12 @@ sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 12. Save even when restarted ```sudo netfilter-persistent save```
 
 ## Test for SSH (again)
-12. Start and enable services ```sudo systemctl unmask hostapd```
+12. Start and enable services
+```sudo systemctl unmask hostapd```
 ```sudo systemctl enable hostapd dnsmasq```
 ```sudo systemctl start hostapd dnsmasq```
-13. See if you can join local wifi network "testserv" on main PC
-14. SSH in ```ssh username@hostname.local```
+14. See if you can join local wifi network "testserv" on main PC
+15. SSH in ```ssh username@hostname.local```
 
 ## Configure Permanent Static IP
 15. Check if network manager is active ```sudo systemctl status NetworkManager```
@@ -90,7 +92,7 @@ Address=192.168.2.1/24
 20. Reboot Pi
 21. Confirm static IP used ```ip a show wlan0```
 
-##RECAP:
+## RECAP:
 1. RaspberryPi IP: 192.168.2.1
 2. Network ID: testserv
 3. The Pi is isolated from your main network and runs its own static IP configuration via systemd-networkd.
