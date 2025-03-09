@@ -25,7 +25,8 @@ sudo apt install -y hostapd dnsmasq iptables-persistent
 
 ## Configuring HostAPD (WiFi Access Point)
 4. Create hostapd config file ```sudo nano /etc/hostapd/hostapd.conf```
-5. Copy text into file:
+
+Copy text into file:
 ```
 interface=wlan0
 driver=nl80211
@@ -41,12 +42,13 @@ wpa_passphrase=SecurePass123
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 ```
-7. Point Hostapd to new config file ```sudo nano /etc/default/hostapd```
+7. Point Hostapd to new config file ```sudo nano /etc/default/hostapd```.
 Edit ```DAEMON_CONF=""``` to include the correct path ```"/etc/hostapd/hostapd.conf"```
 
 ## Configuring dnsmasq (DHCP Server)
-7. Backup default DNSMASQ config file: ```sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig```
-8. Create new DNSMASQ config file : ```sudo nano /etc/dnsmasq.conf```
+7. Backup default DNSMASQ config file ```sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig```
+8. Create new DNSMASQ config file ```sudo nano /etc/dnsmasq.conf``` 
+
 Copy text into file:
 ```
 interface=wlan0
@@ -74,7 +76,8 @@ sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 ## Configure Permanent Static IP
 15. Check if network manager is active ```sudo systemctl status NetworkManager```
 16. Using SystemD create config file ```sudo nano /etc/systemd/network/10-wlan0.network```
-17. Copy text into file:
+
+Copy text into file:
 ```
 [Match]
 Name=wlan0
